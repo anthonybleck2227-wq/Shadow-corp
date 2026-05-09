@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central de Relatos - Shadow Corp</title>
+
+<style>
+
+/* RESET */
+*{
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+/* FUNDO */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background:
+    url("https://i.imgur.com/aCLEGMG.png")
+    center/cover no-repeat;
+
+    opacity:0.6;
+    z-index:-1;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+
+    padding:15px 30px;
+
+    background:rgba(42,15,58,0.85);
+    backdrop-filter:blur(5px);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1000;
+
+    box-shadow:0 0 15px rgba(128,0,255,0.3);
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+/* MENU */
+#topo ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+
+    margin:0;
+    padding:0;
+}
+
+#topo a{
+    color:white;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+#topo a:hover{
+    color:#c084ff;
+}
+
+/* MAIN */
+main{
+    flex:1;
+    padding:130px 20px 40px;
+    max-width:1200px;
+    margin:auto;
+}
+
+/* BOX */
+.box{
+    background:rgba(20,20,20,0.9);
+
+    padding:25px;
+    border-radius:12px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 0 20px rgba(128,0,255,0.3);
+}
+
+.box h2{
+    margin-top:0;
+    color:#c084ff;
+}
+
+/* INPUTS */
+input,
+select,
+textarea{
+    width:100%;
+
+    padding:12px;
+    margin-bottom:15px;
+
+    border:none;
+    border-radius:6px;
+
+    background:#111;
+    color:white;
+
+    outline:none;
+}
+
+textarea{
+    resize:none;
+    height:120px;
+}
+
+/* BOTÕES */
+button{
+    padding:10px 15px;
+
+    border:none;
+    border-radius:6px;
+
+    background:
+    linear-gradient(45deg,#6a00ff,#c084ff);
+
+    color:white;
+    font-weight:bold;
+
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.03);
+}
+
+/* TABELA */
+table{
+    width:100%;
+    border-collapse:collapse;
+
+    background:rgba(20,20,20,0.9);
+}
+
+th, td{
+    border:1px solid #333;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#1a1a1a;
+    color:#c084ff;
+}
+
+/* STATUS */
+.status-analise{
+    color:#ffcc00;
+    font-weight:bold;
+}
+
+.status-andamento{
+    color:#00BFFF;
+    font-weight:bold;
+}
+
+.status-concluido{
+    color:#00e676;
+    font-weight:bold;
+}
+
+.status-critico{
+    color:#ff4d4d;
+    font-weight:bold;
+}
+
+/* BOTÃO APAGAR */
+.btn-apagar{
+    background:#ff3030;
+}
+
+.btn-apagar:hover{
+    background:#ff0000;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:15px;
+
+    background:rgba(13,13,13,0.85);
+
+    border-top:1px solid #222;
+}
+
+/* RESPONSIVO */
+@media(max-width:700px){
+
+    header{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    #topo ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+    th, td{
+        padding:6px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">Shadow Corp</div>
+
+<nav id="topo">
+<ul>
+
+<li><a href="index.html">Início</a></li>
+
+<li><a href="Agentes.html">Agentes</a></li>
+
+<li><a href="Contatos.html">Contatos</a></li>
+
+<li><a href="Suas Missões.html">Relatórios</a></li>
+
+</ul>
+</nav>
+
+</header>
+
+<main>
+
+<!-- FORMULÁRIO -->
+<div class="box">
+
+<h2>📡 Enviar Relato Paranormal</h2>
+
+<input
+type="text"
+id="civil"
+placeholder="Seu nome">
+
+<input
+type="text"
+id="missao"
+placeholder="Título do relato">
+
+<select id="tipo">
+
+<option>Paranormal</option>
+
+<option>Entidade</option>
+
+<option>Ocultismo</option>
+
+<option>Distúrbio de Realidade</option>
+
+<option>Desconhecido</option>
+
+</select>
+
+<textarea
+id="descricao"
+placeholder="Descreva o ocorrido..."></textarea>
+
+<button onclick="salvarRegistro()">
+
+Enviar Relato
+
+</button>
+
+</div>
+
+<!-- BUSCA -->
+<div class="box">
+
+<input
+type="text"
+id="busca"
+placeholder="Buscar relatos...">
+
+</div>
+
+<!-- TABELA -->
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Civil</th>
+
+<th>Agente</th>
+
+<th>Relato</th>
+
+<th>Tipo</th>
+
+<th>Status</th>
+
+<th>Descrição</th>
+
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tabelaRegistros">
+
+</tbody>
+
+</table>
+
+</main>
+
+<footer>
+
+<p>&copy; 2026 - Shadow Corp</p>
+
+</footer>
+
+<script>
+
+/* CONTADOR */
+let contador = 1;
+
+/* CARREGAR */
+window.onload = function(){
+
+    const dados =
+    JSON.parse(localStorage.getItem("registros")) || [];
+
+    dados.forEach(registro => {
+
+        adicionarTabela(registro);
+
+    });
+
+    contador = dados.length + 1;
+}
+
+/* SALVAR */
+function salvarRegistro(){
+
+    const civil =
+    document.getElementById("civil").value;
+
+    const missao =
+    document.getElementById("missao").value;
+
+    const tipo =
+    document.getElementById("tipo").value;
+
+    const descricao =
+    document.getElementById("descricao").value;
+
+    if(
+        civil === "" ||
+        missao === "" ||
+        descricao === ""
+    ){
+
+        alert("Preencha todos os campos.");
+
+        return;
+    }
+
+    const novoRegistro = {
+
+        id:contador,
+
+        civil,
+
+        agente:"NÃO ATRIBUÍDO",
+
+        missao,
+
+        tipo,
+
+        status:"Em análise",
+
+        descricao
+
+    };
+
+    adicionarTabela(novoRegistro);
+
+    const dados =
+    JSON.parse(localStorage.getItem("registros")) || [];
+
+    dados.push(novoRegistro);
+
+    localStorage.setItem(
+        "registros",
+        JSON.stringify(dados)
+    );
+
+    contador++;
+
+    limparCampos();
+}
+
+/* ADICIONAR TABELA */
+function adicionarTabela(dado){
+
+    const tabela =
+    document.getElementById("tabelaRegistros");
+
+    let classeStatus = "";
+
+    if(dado.status === "Em análise"){
+        classeStatus = "status-analise";
+    }
+
+    if(dado.status === "Em andamento"){
+        classeStatus = "status-andamento";
+    }
+
+    if(dado.status === "Concluído"){
+        classeStatus = "status-concluido";
+    }
+
+    if(dado.status === "Crítico"){
+        classeStatus = "status-critico";
+    }
+
+    tabela.innerHTML += `
+
+    <tr id="registro-${dado.id}">
+
+        <td>#${dado.id}</td>
+
+        <td>${dado.civil}</td>
+
+        <td>${dado.agente}</td>
+
+        <td>${dado.missao}</td>
+
+        <td>${dado.tipo}</td>
+
+        <td class="${classeStatus}">
+            ${dado.status}
+        </td>
+
+        <td>${dado.descricao}</td>
+
+        <td>
+
+            <button
+            onclick="atribuirAgente(${dado.id})">
+
+            Atribuir
+
+            </button>
+
+            <br><br>
+
+            <button
+            class="btn-apagar"
+            onclick="apagarRegistro(${dado.id})">
+
+            Apagar
+
+            </button>
+
+        </td>
+
+    </tr>
+
+    `;
+}
+
+/* ATRIBUIR AGENTE */
+function atribuirAgente(id){
+
+    const agente = prompt(
+
+`Escolha o agente:
+
+Agente A
+Agente L
+Agente M
+Agente R`
+
+    );
+
+    if(!agente){
+        return;
+    }
+
+    let dados =
+    JSON.parse(localStorage.getItem("registros")) || [];
+
+    dados.forEach(registro => {
+
+        if(registro.id === id){
+
+            registro.agente = agente;
+
+            registro.status = "Em andamento";
+
+        }
+
+    });
+
+    localStorage.setItem(
+        "registros",
+        JSON.stringify(dados)
+    );
+
+    location.reload();
+}
+
+/* APAGAR */
+function apagarRegistro(id){
+
+    const confirmar =
+    confirm("Deseja apagar este relato?");
+
+    if(!confirmar){
+        return;
+    }
+
+    let dados =
+    JSON.parse(localStorage.getItem("registros")) || [];
+
+    dados =
+    dados.filter(registro => registro.id !== id);
+
+    localStorage.setItem(
+        "registros",
+        JSON.stringify(dados)
+    );
+
+    document
+    .getElementById(`registro-${id}`)
+    .remove();
+}
+
+/* LIMPAR */
+function limparCampos(){
+
+    document.getElementById("civil").value = "";
+
+    document.getElementById("missao").value = "";
+
+    document.getElementById("descricao").value = "";
+}
+
+/* BUSCA */
+const busca =
+document.getElementById("busca");
+
+busca.addEventListener("keyup", function(){
+
+    const texto =
+    busca.value.toLowerCase();
+
+    const linhas =
+    document.querySelectorAll("#tabelaRegistros tr");
+
+    linhas.forEach(linha => {
+
+        const conteudo =
+        linha.innerText.toLowerCase();
+
+        if(conteudo.includes(texto)){
+
+            linha.style.display = "";
+
+        }else{
+
+            linha.style.display = "none";
+
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

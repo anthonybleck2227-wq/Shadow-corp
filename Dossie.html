@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dossiê do Agente</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+    color:white;
+}
+
+/* FUNDO */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url("https://i.imgur.com/aCLEGMG.png") center/cover no-repeat;
+    opacity:0.6;
+    z-index:-1;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+
+    padding:15px 30px;
+
+    background:rgba(42,15,58,0.85);
+    backdrop-filter:blur(5px);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1000;
+
+    box-shadow:0 0 15px rgba(128,0,255,0.3);
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+/* MENU */
+#topo ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+#topo a{
+    color:white;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+#topo a:hover{
+    color:#c084ff;
+}
+
+/* MAIN */
+main{
+    padding:120px 20px 40px;
+    max-width:1000px;
+    margin:auto;
+}
+
+/* CARD */
+.card{
+    background:rgba(20,20,20,0.9);
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 0 20px rgba(128,0,255,0.3);
+}
+
+/* TOPO */
+.topo{
+    display:flex;
+    gap:25px;
+    align-items:center;
+}
+
+/* FOTO */
+.perfil{
+    width:180px;
+    border-radius:12px;
+    border:2px solid rgba(192,132,255,0.4);
+}
+
+/* INFO */
+.nome{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.classe{
+    font-size:20px;
+    margin-top:5px;
+}
+
+.rank{
+    color:#FFD700;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* HISTÓRICO */
+.historico{
+    margin-top:35px;
+}
+
+.missao{
+    background:#111;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    border-left:4px solid #c084ff;
+}
+
+.missao h3{
+    color:#c084ff;
+    margin-top:0;
+}
+
+/* MISSÕES ATRIBUÍDAS */
+.missao-atribuida{
+    background:#160f22;
+    border-left:4px solid #00e676;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+.missao-atribuida h3{
+    margin-top:0;
+    color:#00e676;
+}
+
+/* STATUS */
+.status-ok{
+    color:#00e676;
+    font-weight:bold;
+}
+
+.status-andamento{
+    color:#ffcc00;
+    font-weight:bold;
+}
+
+.status-critico{
+    color:#ff4d4d;
+    font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:15px;
+    background:rgba(13,13,13,0.85);
+    margin-top:30px;
+    border-top:1px solid #222;
+}
+
+/* RESPONSIVO */
+@media(max-width:700px){
+
+    header{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    #topo ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .topo{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .perfil{
+        width:100%;
+        max-width:250px;
+    }
+
+    .nome{
+        font-size:28px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">Shadow Corp</div>
+
+<nav id="topo">
+<ul>
+<li><a href="index.html">Início</a></li>
+<li><a href="Agentes.html">Agentes</a></li>
+<li><a href="Contatos.html">Contatos</a></li>
+<li><a href="Suas Missões.html">Relatórios</a></li>
+</ul>
+</nav>
+
+</header>
+
+<main>
+
+<div class="card">
+
+<!-- TOPO -->
+<div class="topo">
+
+<img id="foto" class="perfil">
+
+<div>
+
+<div id="nome" class="nome"></div>
+
+<div id="classe" class="classe"></div>
+
+<div id="rank" class="rank"></div>
+
+<p id="descricao"></p>
+
+</div>
+
+</div>
+
+<!-- HISTÓRICO -->
+<div class="historico">
+
+<h2>📁 Histórico do Agente</h2>
+
+<div id="historico"></div>
+
+</div>
+
+<!-- MISSÕES -->
+<div class="historico">
+
+<h2>📡 Missões Atribuídas</h2>
+
+<div id="missoesAgente"></div>
+
+</div>
+
+</div>
+
+</main>
+
+<footer>
+<p>&copy; 2026 - Shadow Corp</p>
+</footer>
+
+<script>
+
+/* =========================
+   BANCO DE DADOS DOS AGENTES
+========================= */
+
+const agentes = {
+
+A: {
+
+nome: "Agente A",
+
+classe: "Combatente",
+
+cor: "#ff4d4d",
+
+foto: "https://i.imgur.com/tovePfn.png",
+
+rank: "Nível Baixo",
+
+descricao:
+"Recruta recém-integrado à divisão de combate da Shadow Corp.",
+
+historico: [
+
+{
+titulo:"",
+texto:""
+},
+
+{
+titulo:"",
+texto:""
+}
+
+]
+
+},
+
+L: {
+
+nome: "Agente L",
+
+classe: "Ocultista",
+
+cor: "#9b59ff",
+
+foto: "https://i.imgur.com/mpipoGJ.png",
+
+rank: "Nível Baixo",
+
+descricao:
+"Especialista iniciante em fenômenos ocultos e distorções paranormais.",
+
+historico: [
+
+{
+titulo:"",
+texto:""
+},
+
+{
+titulo:"",
+texto:""
+}
+
+]
+
+},
+
+M: {
+
+nome: "Agente M",
+
+classe: "Especialista",
+
+cor: "#00e676",
+
+foto: "https://i.imgur.com/UvS6r5Z.png",
+
+rank: "Nível Baixo",
+
+descricao:
+"Responsável por suporte tático e análise operacional.",
+
+historico: [
+
+{
+titulo:"",
+texto:""
+},
+
+{
+titulo:"",
+texto:""
+}
+
+]
+
+},
+
+R: {
+
+nome: "Agente R",
+
+classe: "???",
+
+cor: "gray",
+
+foto: "https://i.imgur.com/2O7DN1X.png",
+
+rank: "Restrito",
+
+descricao:
+"Arquivo parcialmente corrompido. Dados insuficientes.",
+
+historico: [
+
+{
+titulo:"",
+texto:""
+}
+
+]
+
+}
+
+};
+
+/* =========================
+   PEGAR AGENTE DA URL
+========================= */
+
+const params = new URLSearchParams(window.location.search);
+
+const id = params.get("agente");
+
+/* =========================
+   SE EXISTIR
+========================= */
+
+if(agentes[id]){
+
+const agente = agentes[id];
+
+/* DADOS */
+
+document.getElementById("foto").src =
+agente.foto;
+
+document.getElementById("nome").innerText =
+agente.nome;
+
+document.getElementById("classe").innerText =
+agente.classe;
+
+document.getElementById("classe").style.color =
+agente.cor;
+
+document.getElementById("rank").innerText =
+agente.rank;
+
+document.getElementById("descricao").innerText =
+agente.descricao;
+
+/* HISTÓRICO */
+
+const historico =
+document.getElementById("historico");
+
+agente.historico.forEach(missao => {
+
+historico.innerHTML += `
+
+<div class="missao">
+
+<h3>${missao.titulo}</h3>
+
+<p>${missao.texto}</p>
+
+</div>
+
+`;
+
+});
+
+/* =========================
+   MISSÕES ATRIBUÍDAS
+========================= */
+
+const registros =
+JSON.parse(localStorage.getItem("registros")) || [];
+
+const areaMissoes =
+document.getElementById("missoesAgente");
+
+const missoesDoAgente =
+registros.filter(registro =>
+registro.agente === agente.nome
+);
+
+if(missoesDoAgente.length <= 0){
+
+    areaMissoes.innerHTML =
+    "<p>Nenhuma missão atribuída.</p>";
+
+}else{
+
+    missoesDoAgente.forEach(missao => {
+
+        let statusClasse = "";
+
+        if(missao.status === "Concluído"){
+            statusClasse = "status-ok";
+        }
+
+        if(missao.status === "Em andamento"){
+            statusClasse = "status-andamento";
+        }
+
+        if(missao.status === "Crítico"){
+            statusClasse = "status-critico";
+        }
+
+        areaMissoes.innerHTML += `
+
+        <div class="missao-atribuida">
+
+            <h3>${missao.missao}</h3>
+
+            <p><b>Tipo:</b> ${missao.tipo}</p>
+
+            <p>
+                <b>Status:</b>
+                <span class="${statusClasse}">
+                    ${missao.status}
+                </span>
+            </p>
+
+            <p>${missao.descricao}</p>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+}else{
+
+document.querySelector("main").innerHTML = `
+
+<div class="card">
+
+<h1>Agente não encontrado</h1>
+
+<p>O arquivo solicitado não existe.</p>
+
+</div>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
