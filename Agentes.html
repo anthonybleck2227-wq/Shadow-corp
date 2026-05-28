@@ -211,10 +211,6 @@ main{
     color:#00e676;
 }
 
-.desconhecido{
-    color:gray;
-}
-
 /* INFO */
 .info-agente{
 
@@ -291,7 +287,6 @@ button{
     transition:0.3s;
 }
 
-/* DOSSIÊ */
 .btn-dossie{
 
     background:linear-gradient(45deg,
@@ -299,7 +294,6 @@ button{
     #c084ff);
 }
 
-/* PARADOXO */
 .btn-paradoxo{
 
     background:linear-gradient(45deg,
@@ -491,10 +485,10 @@ class="atributos-img">
 </tr>
 
 <tr>
-<td id="missoesA"></td>
-<td id="sucessosA"></td>
-<td></td>
-<td></td>
+<td id="missoesA">0</td>
+<td id="sucessosA">0</td>
+<td id="fracassosA">0</td>
+<td>0</td>
 </tr>
 
 </table>
@@ -573,15 +567,15 @@ class="atributos-img">
 <tr>
 <th>Missões</th>
 <th>Sucessos</th>
-<th>Falhas</th>
+<th>Fracassos</th>
 <th>Sanidade</th>
 </tr>
 
 <tr>
-<td id="missoesL"></td>
-<td id="sucessosL"></td>
-<td></td>
-<td></td>
+<td id="missoesL">0</td>
+<td id="sucessosL">0</td>
+<td id="fracassosL">0</td>
+<td>82%</td>
 </tr>
 
 </table>
@@ -660,15 +654,15 @@ class="atributos-img">
 <tr>
 <th>Missões</th>
 <th>Sucessos</th>
-<th>Erros</th>
+<th>Fracassos</th>
 <th>Precisão</th>
 </tr>
 
 <tr>
-<td id="missoesM"></td>
-<td id="sucessosM"></td>
-<td></td>
-<td></td>
+<td id="missoesM">0</td>
+<td id="sucessosM">0</td>
+<td id="fracassosM">0</td>
+<td>91%</td>
 </tr>
 
 </table>
@@ -681,6 +675,93 @@ class="atributos-img">
 
 <div class="arquivo">
 ⚠ Sistema neural alterado.
+</div>
+
+</div>
+
+</div>
+
+<!-- AGENTE R -->
+<div class="agente" id="R">
+
+<div class="agente-topo">
+
+<img
+id="fotoR"
+src="https://i.imgur.com/5RuLh4W.png"
+class="perfil">
+
+<div>
+
+<div class="nome">
+Agente R
+</div>
+
+<div
+class="classe ocultista"
+id="classeR">
+
+Ocultista
+
+</div>
+
+<div class="botoes">
+
+<button
+class="btn-dossie"
+onclick="abrirDossie('R')">
+
+Dossiê
+
+</button>
+
+<button
+class="btn-paradoxo"
+onclick="ativarParadoxo('R')">
+
+Ativar Paradoxo
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="info-agente">
+
+<img
+id="fichaR"
+src="https://i.imgur.com/5RuLh4W.png"
+class="atributos-img">
+
+<table>
+
+<tr>
+<th>Missões</th>
+<th>Sucessos</th>
+<th>Fracassos</th>
+<th>Ocultismo</th>
+</tr>
+
+<tr>
+<td id="missoesR">0</td>
+<td id="sucessosR">0</td>
+<td id="fracassosR">0</td>
+<td>99%</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="arquivos">
+
+<h3>ARQUIVOS PARADOXO</h3>
+
+<div class="arquivo">
+⚠ Presença paranormal extrema detectada.
 </div>
 
 </div>
@@ -754,6 +835,13 @@ normal:"https://i.imgur.com/VWWoZ3f.png",
 paradoxo:"https://i.imgur.com/UvS6r5Z.png",
 classeNormal:"Especialista",
 classeParadoxo:"Especialista"
+},
+
+R:{
+normal:"https://i.imgur.com/5RuLh4W.png",
+paradoxo:"https://i.imgur.com/S3IGI4K.png",
+classeNormal:"Ocultista",
+classeParadoxo:"Ocultista"
 }
 
 };
@@ -762,7 +850,8 @@ let estado = {
 
 A:false,
 L:false,
-M:false
+M:false,
+R:false
 
 };
 
@@ -821,6 +910,10 @@ classe.style.color="#00e676";
 
 if(id==="M"){
 classe.style.color="#00e676";
+}
+
+if(id==="R"){
+classe.style.color="#9b59ff";
 }
 
 }
@@ -889,6 +982,9 @@ document.getElementById("missoesA")
 document.getElementById("sucessosA")
 .innerText = dados.sucessos || 0;
 
+document.getElementById("fracassosA")
+.innerText = dados.fracassos || 0;
+
 }
 
 });
@@ -910,6 +1006,9 @@ document.getElementById("missoesL")
 document.getElementById("sucessosL")
 .innerText = dados.sucessos || 0;
 
+document.getElementById("fracassosL")
+.innerText = dados.fracassos || 0;
+
 }
 
 });
@@ -930,6 +1029,33 @@ document.getElementById("missoesM")
 
 document.getElementById("sucessosM")
 .innerText = dados.sucessos || 0;
+
+document.getElementById("fracassosM")
+.innerText = dados.fracassos || 0;
+
+}
+
+});
+
+/* AGENTE R */
+
+onSnapshot(
+doc(db,"agentes","R"),
+
+(snapshot)=>{
+
+if(snapshot.exists()){
+
+const dados = snapshot.data();
+
+document.getElementById("missoesR")
+.innerText = dados.missoes || 0;
+
+document.getElementById("sucessosR")
+.innerText = dados.sucessos || 0;
+
+document.getElementById("fracassosR")
+.innerText = dados.fracassos || 0;
 
 }
 
